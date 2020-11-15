@@ -14,7 +14,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-
 #
 # Make sure the mount path of libvirt has enough space in the hypervisor
 #
@@ -32,7 +31,8 @@
   set_fact:
     kubeinit_validations_libvirt_disk_usage: "{{ kubeinit_validations_libvirt_disk_usage|default(0)|int + hostvars[item].disk[:-1]|int }}"
   with_items:
-    - "{{ groups['all'] | map('regex_search','^((?!hypervisor).)*$') | select('string') | list }}"
+    - "{{ groups['all'] | map('regex_search','^((?!'+ groups['hypervisor_nodes'][0] +').)*$') | select('string') | list }}"
+
   tags:
     - provision_libvirt
 
